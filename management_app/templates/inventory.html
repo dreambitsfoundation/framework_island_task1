@@ -1,0 +1,135 @@
+{% extends "base.html" %} {% block content %}
+<!---->
+{% load static %} {% get_static_prefix as STATIC_PREFIX %}
+<div class="row">
+  <div class="col-sm-12 col-md-6">
+    <form class="card" style="padding: 15px">
+      Choose Supplier
+      <select name="supplier_id" class="form-control">
+        {% for supplier in suppliers %}
+        <option value="{{supplier.pk}}">{{supplier.name}}</option>
+        {% endfor %}
+      </select>
+      <br/>
+      <input class="btn btn-info" type="submit" value="Show inventories" />
+    </form>
+
+    <span style="text-align: center; margin-top: 20px; margin-bottom: 30px; width: 100%">OR</span>
+
+    <div class="card" style="padding: 15px">
+      <form class="row g-6">
+        <div class="col-8">
+          <input type="text" name="search" class="form-control" id="search-text" placeholder="Search by name and description" autocomplete="off" >
+        </div>
+        <div class="col-4">
+          <button type="submit" class="btn btn-primary">Search Product</button>
+        </div>
+      </form>
+    </div>
+
+    {% if inventories %}
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto">
+      <h5 class="display-5">All inventories</h5>
+    </div>
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Image</th>
+        <th>Action</th>
+      </tr>
+      {% for inventory in inventories %}
+      <tr>
+        <td>{{inventory.name}}</td>
+
+        <td>{{inventory.description}}</td>
+
+        <td>{{inventory.price}}</td>
+
+        <td>{{inventory.quantity_in_stock}}</td>
+
+        <td>
+          {% if inventory.image %}
+          <img
+            src="{{request.scheme}}://{{request.get_host}}{{inventory.image.url}}"
+            alt="{{inventory.name}} photo"
+            height="50"
+            width="50"
+          />
+          {%endif%}
+        </td>
+
+        <td>
+          <a class="btn btn-primary" href="inventory?sku={{inventory.sku}}"
+            >Edit</a
+          >
+          <button
+            class="btn btn-danger"
+            onclick="deleteInventory('{{inventory.sku}}')"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+  </div>
+  <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 text-center" style="width: 600px; text-align: center">
+      {% if errors %}
+        {% for error in errors%}
+        <div class="alert alert-danger" role="alert">
+          {{error}}
+        </div>
+        {% endfor %}
+      {% endif %}
+      {% if success %}
+        <div class="alert alert-success" role="alert">
+          {{success}}
+        </div>
+      {% endif %}
+    </div>
+    {% if sku %}
+    <a class="btn btn-primary" href="">Create New Inventory</a>
+    <br /><br />
+    <h5 class="display-5">Updating Inventory</h5>
+    {% else %}
+    <h5 class="display-5">Creating New Inventory</h5>
+    {% endif %}
+    <form
+      method="post"
+      enctype="multipart/form-data"
+      {% if sku %}action="?sku={{sku}}"
+      {%endif%}
+    >
+      {% csrf_token %} {{ form.as_p }}
+      <input type="submit" class="btn btn-primary" value="Save Inventory"/>
+    </form>
+  </div>
+</div>
+
+<script>
+  function deleteInventory(sku) {
+    var wantToDelete = confirm(
+      "Are you sure you want to delete this inventory?"
+    );
+    if (wantToDelete) {
+      fetch("?sku=" + sku, {
+        method: "DELETE",
+      }).then((response) => {
+        if (response.status == 204) {
+          alert("Inventory deleted successfully.");
+          location.reload();
+        } else {
+          response.json().then((data) => {
+            alert("Error: " + data["error"]);
+          });
+        }
+      });
+    }
+  }
+</script>
+{% endblock %}
