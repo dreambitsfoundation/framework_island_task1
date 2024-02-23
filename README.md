@@ -164,6 +164,7 @@ Following are the considerations that I have made before beginning the developme
 ## Play around/User Guide
 
 1. Goto `localhost:8000/api/filter_fields` *method: GET* to see all field names and options per model.
+
    Sample Response
    ```json
    [
@@ -220,7 +221,9 @@ Following are the considerations that I have made before beginning the developme
    ]
    ```
 
-2. To make a query use the API `localhost:8000/api/filter_query` *method: POST* to make a query
+2. To make a query use the API `localhost:8000/api/filter_query` *method: POST* to make a query.
+
+   Sample Request
    ```json
    {
       "fields": ["name", "sku", "quantity_in_stock", "supplier__name", "supplier__address"],
@@ -231,7 +234,7 @@ Following are the considerations that I have made before beginning the developme
       "sorting": {"field": "quantity_in_stock", "order": "asc"}
    }
    ```
-   Following is a lost of fiters
+   Following is a list of filters
    ```json
    {
       "filter": [
