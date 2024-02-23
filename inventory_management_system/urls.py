@@ -10,4 +10,5 @@ admin.site.index_title = "Welcome to Inventory Management Portal"
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("management_app.urls")),
+    path("api/", include("api.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

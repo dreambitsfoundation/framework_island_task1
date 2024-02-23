@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Test Supplier1",
+    "address": "Test address",
+    "contact_number": "1234567890"
+  },
+  {
+    "name": "Test Supplier2",
+    "address": "Test address",
+    "contact_number": "1234567890"
+  }
+]

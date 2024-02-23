@@ -1,0 +1,7 @@
+{
+  "name": "Inventory",
+  "description": "Description of the inventory",
+  "quantity_in_stock": 100,
+  "price": 250.4,
+  "image": ""
+}
