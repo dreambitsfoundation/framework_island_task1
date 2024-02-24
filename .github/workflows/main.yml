@@ -1,5 +1,7 @@
 name: Run Django test
 on: [pull_request, push] # activates the workflow when there is a push or pull request in the repo
+env:
+  DJANGO_SETTINGS_MODULE: inventory_management_system.settings
 jobs:
   test_project:
     runs-on: ubuntu-latest # operating system your code will run on
